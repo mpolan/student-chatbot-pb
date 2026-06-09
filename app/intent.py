@@ -1,20 +1,52 @@
 import spacy
 
 INTENTS = {
-    "rekrutacja": ["rekrutacja", "kandydat", "matura", "nabór", "terminy"],
+    "rekrutacja": [
+        "rekrutacja",
+        "kandydat",
+        "matura",
+        "nabór",
+        "terminy",
+        "próg",
+        "progi",
+    ],
     "studia": ["kierunek", "studia", "informatyka", "program", "przedmioty"],
     "kontakt": ["kontakt", "dziekanat", "email", "telefon", "adres"],
     "stypendia": ["stypendium", "socjalne", "naukowe", "zapomoga"],
+    "sprawy_studenckie": [
+        "legitymacja",
+        "usos",
+        "praktyka",
+        "praktyki",
+        "tok",
+        "opłata",
+        "opłaty",
+        "akademicki",
+        "regulamin",
+        "kredyt",
+    ],
     "akademik": [
         "akademik",
         "akademika",
         "akademiki",
         "akademikach",
         "dom",
-        "student",
         "pokój",
         "zakwaterowanie",
     ],
+}
+
+SPECIFIC_INTENTS = {
+    "rekrutacja": {"próg", "progi"},
+    "sprawy_studenckie": {
+        "legitymacja",
+        "usos",
+        "praktyka",
+        "praktyki",
+        "akademicki",
+        "regulamin",
+        "kredyt",
+    },
 }
 
 SMALL_TALK = {
@@ -71,6 +103,10 @@ def get_terms(text: str) -> set:
 def detect_intent(text):
     terms = get_terms(text)
     scores = {}
+
+    for intent, keywords in SPECIFIC_INTENTS.items():
+        if terms & keywords:
+            return intent
 
     for intent, keywords in INTENTS.items():
         score = 0

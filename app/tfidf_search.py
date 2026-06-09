@@ -19,6 +19,11 @@ QUERY_EXPANSIONS = {
     "irk": "internetowa rekrutacja kandydatów zapisy konto",
     "studia": "studia kierunek kierunki program studiów przedmioty sylabus",
     "rekrutacja": "rekrutacja krok po kroku harmonogram dokumenty kandydat studia pierwszego stopnia irk",
+    "legitymacja": "legitymacja studencka dokument student",
+    "usos": "usos usosweb system student",
+    "praktyka": "praktyka praktyki zawodowe student",
+    "akademicki": "rok akademicki harmonogram organizacja kształcenia",
+    "opłata": "opłata opłaty studia student",
 }
 
 IMPORTANT_URL_BOOSTS = {
