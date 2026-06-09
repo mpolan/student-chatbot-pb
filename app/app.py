@@ -1,10 +1,10 @@
 from app.intent import detect_intent
 from app.tfidf_search import search
-from app.llm_answer import generate_answer
+from app.llm_answer import generate_answer, rewrite_query
 
 
 def print_sources(results):
-    print("\nŹródła:")
+    print("\n[Źródła z bazy danych]:")
     for i, result in enumerate(results, start=1):
         print(f"{i}. {result['title']}")
         print(f"   {result['url']}")
@@ -13,6 +13,8 @@ def print_sources(results):
 
 def main():
     print("Student Assistant CLI")
+    
+    chat_history = [] 
 
     while True:
         query = input("\nTy: ").strip()
@@ -20,25 +22,33 @@ def main():
         if query.lower() == "q":
             break
 
-        intent = detect_intent(query)
+        search_query = query
+        if chat_history:
+            search_query = rewrite_query(query, chat_history)
+        intent = detect_intent(search_query)
         print(f"\nWykryta intencja: {intent}")
 
-        # Tylko small talk omija bazę. Dla nieznanej intencji szukamy globalnie.
         if intent in ["powitanie", "chitchat"]:
-            print("\nBot:")
-            print("Cześć! Jestem Student Assistant PB. Mogę pomóc w sprawach rekrutacji, studiów, kontaktu, stypendiów i akademików.")
-            continue
+            results = []
         else:
-            results = search(query, k=3)
+            results = search(search_query, k=5)
+            if "podyplomow" not in search_query.lower():
+                results = [r for r in results if "podyplomowe" not in r["title"].lower() and "podyplomowe" not in r["url"].lower()]
+            results = results[:3]
+            results = [r for r in results if r["score"] > 0.12]
 
         answer = generate_answer(query, results)
 
         print("\nBot:")
         print(answer)
 
-        # Drukowanie źródeł tylko, jeśli faktycznie coś znaleźliśmy
         if results:
             print_sources(results)
+
+        chat_history.append({"user": query, "bot": answer})
+        
+        if len(chat_history) > 10:
+            chat_history.pop(0)
 
 
 if __name__ == "__main__":
