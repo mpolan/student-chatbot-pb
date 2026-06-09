@@ -12,13 +12,21 @@ QUERY_EXPANSIONS = {
     "kontakt": "kontakt telefon email e-mail adres dziekanat dział spraw studenckich",
     "skontaktować": "kontakt telefon email e-mail adres dziekanat rektorat",
     "progi": "progi punktowe punkty minimalne rekrutacja",
-    "informatyka": "informatyka wydział informatyki data science",
+    "informatyka": "informatyka kierunki studiów oferta kierunków wydział informatyki data science",
     "akademik": "akademik akademiki dom studenta zakwaterowanie miejsce w akademiku osiedle akademickie",
+    "zakwaterowanie": "akademik akademiki dom studenta zakwaterowanie miejsce pokój",
+    "zakwaterować": "akademik akademiki dom studenta zakwaterowanie miejsce pokój",
     "stypendium": "stypendium stypendia socjalne rektora zapomoga świadczenia student",
     "termin": "terminy harmonogram rekrutacja daty",
     "irk": "internetowa rekrutacja kandydatów zapisy konto",
     "studia": "studia kierunek kierunki program studiów przedmioty sylabus",
-    "rekrutacja": "rekrutacja krok po kroku harmonogram dokumenty kandydat studia pierwszego stopnia irk",
+    "rekrutacja": "rekrutacja kandydat irk",
+    "dokumenty": "dokumenty rekrutacyjne wymagane dokumenty",
+    "harmonogram": "harmonogram rekrutacji terminy daty",
+    "rozpoczyna": "harmonogram terminy daty rozpoczęcie",
+    "punkty": "punkty wzór rekrutacyjny obliczanie punktów",
+    "obliczane": "punkty wzór rekrutacyjny obliczanie punktów",
+    "miejsca": "limity miejsc liczba miejsc",
     "legitymacja": "legitymacja studencka dokument student",
     "usos": "usos usosweb system student",
     "praktyka": "praktyka praktyki zawodowe student",
@@ -27,16 +35,14 @@ QUERY_EXPANSIONS = {
 }
 
 IMPORTANT_URL_BOOSTS = {
-    "rekrutacja-krok-po-kroku": 0.30,
-    "studenci/akademiki-pb": 0.30,
-    "studenci/stypendia": 0.25,
-    "kontakt/dane-teleadresowe": 0.15,
+    "rekrutacja-krok-po-kroku": 0.08,
+    "studenci/akademiki-pb": 0.10,
+    "kontakt/dane-teleadresowe": 0.08,
 }
 
 BAD_URL_PENALTIES = {
     "irk.pb.edu.pl": 0.15,
     "irk2.uci.pb.edu.pl": 0.10,
-    "kontakt": 0.05,
     "2025/": 0.10,
     "2026/": 0.10,
     "dni-otwarte": 0.10,
@@ -101,6 +107,7 @@ def search(query, k=3):
     
     tfidf_scores = cosine_similarity(q, selected_matrix).flatten()
     scores = tfidf_scores.copy()
+    query_terms = get_terms(expanded_query)
 
     for i, chunk in enumerate(selected_chunks):
         url = chunk["url"].lower()
@@ -114,14 +121,8 @@ def search(query, k=3):
             if pattern in url:
                 scores[i] -= penalty
 
-        if "krok po kroku" in title:
-            scores[i] += 0.10
-
-        if "akademiki pb" in title:
-            scores[i] += 0.10
-
-        if "stypendia" in title:
-            scores[i] += 0.10
+        title_url_terms = get_terms(f"{title} {url.replace('-', ' ')}")
+        scores[i] += len(query_terms & title_url_terms) * 0.03
 
     best = scores.argsort()[::-1]
 

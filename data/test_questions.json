@@ -1,0 +1,152 @@
+[
+  {
+    "question": "Jak wygląda rekrutacja na studia pierwszego stopnia?",
+    "expected_intent": "rekrutacja",
+    "expected_url_contains": "rekrutacja-krok-po-kroku-studia-i-stopnia"
+  },
+  {
+    "question": "Jakie dokumenty muszę złożyć podczas rekrutacji?",
+    "expected_intent": "rekrutacja",
+    "expected_url_contains": "dokumenty-rekrutacyjne"
+  },
+  {
+    "question": "Kiedy rozpoczyna się rekrutacja na studia?",
+    "expected_intent": "rekrutacja",
+    "expected_url_contains": "harmonogram-rekrutacji"
+  },
+  {
+    "question": "Jakie są progi punktowe na informatykę?",
+    "expected_intent": "rekrutacja",
+    "expected_url_contains": "progi-punktowe"
+  },
+  {
+    "question": "Jak obliczane są punkty podczas rekrutacji?",
+    "expected_intent": "rekrutacja",
+    "expected_url_contains": "wzor-rekrutacyjny"
+  },
+  {
+    "question": "Ile wynosi opłata rekrutacyjna?",
+    "expected_intent": "rekrutacja",
+    "expected_url_contains": "oplata-za-przeprowadzenie-rekrutacji"
+  },
+  {
+    "question": "Ile miejsc jest dostępnych na kierunkach?",
+    "expected_intent": "rekrutacja",
+    "expected_url_contains": "limity-miejsc"
+  },
+  {
+    "question": "Jakie kierunki studiów oferuje Politechnika Białostocka?",
+    "expected_intent": "studia",
+    "expected_url_contains": "kierunki-studiow"
+  },
+  {
+    "question": "Gdzie znajdę informacje o studiach pierwszego stopnia?",
+    "expected_intent": "studia",
+    "expected_url_contains": "studia-i-stopnia"
+  },
+  {
+    "question": "Czy Politechnika Białostocka oferuje informatykę?",
+    "expected_intent": "studia",
+    "expected_url_contains": "kierunki-studiow"
+  },
+  {
+    "question": "Gdzie znajdę ofertę kierunków studiów?",
+    "expected_intent": "studia",
+    "expected_url_contains": "kierunki-studiow"
+  },
+  {
+    "question": "Gdzie znajdę numer telefonu do Politechniki Białostockiej?",
+    "expected_intent": "kontakt",
+    "expected_url_contains": "kontakt/dane-teleadresowe"
+  },
+  {
+    "question": "Jaki jest adres uczelni?",
+    "expected_intent": "kontakt",
+    "expected_url_contains": "kontakt/dane-teleadresowe"
+  },
+  {
+    "question": "Gdzie znajdę kontakt do Działu Spraw Studenckich?",
+    "expected_intent": "kontakt",
+    "expected_url_contains": "dss/kontakt"
+  },
+  {
+    "question": "Jak uzyskać stypendium socjalne?",
+    "expected_intent": "stypendia",
+    "expected_url_contains": "sekcja-swiadczen-dla-studentow"
+  },
+  {
+    "question": "Jakie świadczenia mogą otrzymać studenci?",
+    "expected_intent": "stypendia",
+    "expected_url_contains": "sekcja-swiadczen-dla-studentow/swiadczenia"
+  },
+  {
+    "question": "Gdzie znajdę kontakt w sprawie stypendium?",
+    "expected_intent": "stypendia",
+    "expected_url_contains": "sekcja-swiadczen-dla-studentow/kontakt"
+  },
+  {
+    "question": "Czy mogę otrzymać stypendium ministra?",
+    "expected_intent": "stypendia",
+    "expected_url_contains": "stypendium-ministra"
+  },
+  {
+    "question": "Jak dostać miejsce w akademiku?",
+    "expected_intent": "akademik",
+    "expected_url_contains": "studenci/akademiki-pb"
+  },
+  {
+    "question": "Jak złożyć podanie o akademik?",
+    "expected_intent": "akademik",
+    "expected_url_contains": "studenci/akademiki-pb"
+  },
+  {
+    "question": "Jak wyglądają pokoje w domu studenta?",
+    "expected_intent": "akademik",
+    "expected_url_contains": "studenci/akademiki-pb"
+  },
+  {
+    "question": "Gdzie znajdę informacje o zakwaterowaniu?",
+    "expected_intent": "akademik",
+    "expected_url_contains": "studenci/akademiki-pb"
+  },
+  {
+    "question": "Jak wyrobić legitymację studencką?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "legitymacja-studencka"
+  },
+  {
+    "question": "Ile kosztuje elektroniczna legitymacja studencka?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "legitymacja-studencka"
+  },
+  {
+    "question": "Gdzie znajdę regulamin studiów?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "regulamin-studiow"
+  },
+  {
+    "question": "Kiedy zaczyna się rok akademicki?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "harmonogram-roku-akademickiego"
+  },
+  {
+    "question": "Gdzie znajdę harmonogram roku akademickiego?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "harmonogram-roku-akademickiego"
+  },
+  {
+    "question": "Gdzie znajdę informacje o kredycie studenckim?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "kredyt-studencki"
+  },
+  {
+    "question": "Jakie sprawy obsługuje Dział Spraw Studenckich?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "dss/sprawy-studenckie"
+  },
+  {
+    "question": "Gdzie znajduje się Sekcja do spraw Organizacji Kształcenia?",
+    "expected_intent": "sprawy_studenckie",
+    "expected_url_contains": "sok/kontakt"
+  }
+]

@@ -12,7 +12,15 @@ INTENTS = {
     ],
     "studia": ["kierunek", "studia", "informatyka", "program", "przedmioty"],
     "kontakt": ["kontakt", "dziekanat", "email", "telefon", "adres"],
-    "stypendia": ["stypendium", "socjalne", "naukowe", "zapomoga"],
+    "stypendia": [
+        "stypendium",
+        "stypendia",
+        "socjalne",
+        "naukowe",
+        "zapomoga",
+        "świadczenie",
+        "świadczenia",
+    ],
     "sprawy_studenckie": [
         "legitymacja",
         "usos",
@@ -33,7 +41,27 @@ INTENTS = {
         "dom",
         "pokój",
         "zakwaterowanie",
+        "zakwaterować",
     ],
+}
+
+INTENT_PHRASES = {
+    "rekrutacja": {
+        "opłata rekrutacyjna",
+        "dokumenty rekrutacyjne",
+        "limity miejsc",
+        "ile miejsc",
+        "wzór rekrutacyjny",
+    },
+    "stypendia": {
+        "sprawie stypendium",
+        "świadczenia dla studentów",
+    },
+    "sprawy_studenckie": {
+        "dział spraw studenckich",
+        "organizacji kształcenia",
+        "organizacja kształcenia",
+    },
 }
 
 SPECIFIC_INTENTS = {
@@ -101,6 +129,16 @@ def get_terms(text: str) -> set:
 
 
 def detect_intent(text):
+    normalized_text = " ".join(
+        token.text.lower()
+        for token in nlp(text)
+        if token.is_alpha
+    )
+
+    for intent, phrases in INTENT_PHRASES.items():
+        if any(phrase in normalized_text for phrase in phrases):
+            return intent
+
     terms = get_terms(text)
     scores = {}
 
@@ -121,12 +159,6 @@ def detect_intent(text):
 
     if scores[best_intent] > 0:
         return best_intent
-
-    normalized_text = " ".join(
-        token.text.lower()
-        for token in nlp(text)
-        if token.is_alpha
-    )
 
     for intent, phrases in SMALL_TALK.items():
         if normalized_text in phrases:
