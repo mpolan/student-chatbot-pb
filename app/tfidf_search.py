@@ -8,14 +8,35 @@ INDEX_FILE = Path("data/tfidf_index.joblib")
 INDEX_DATA = None
 
 QUERY_EXPANSIONS = {
-    "kontakt": "telefon email e-mail adres dziekanat rektorat",
+    "kontakt": "kontakt telefon email e-mail adres dziekanat dział spraw studenckich",
     "skontaktować": "kontakt telefon email e-mail adres dziekanat rektorat",
     "progi": "progi punktowe punkty minimalne rekrutacja",
     "informatyka": "informatyka wydział informatyki data science",
-    "akademik": "akademik dom studenta zakwaterowanie",
-    "stypendium": "stypendium socjalne naukowe zapomoga pomoc materialna",
+    "akademik": "akademik akademiki dom studenta zakwaterowanie miejsce w akademiku osiedle akademickie",
+    "stypendium": "stypendium stypendia socjalne rektora zapomoga świadczenia student",
     "termin": "terminy harmonogram rekrutacja daty",
     "irk": "internetowa rekrutacja kandydatów zapisy konto",
+    "studia": "studia kierunek kierunki program studiów przedmioty sylabus",
+    "rekrutacja": "rekrutacja krok po kroku harmonogram dokumenty kandydat studia pierwszego stopnia irk",
+}
+
+IMPORTANT_URL_BOOSTS = {
+    "rekrutacja-krok-po-kroku": 0.30,
+    "studenci/akademiki-pb": 0.30,
+    "studenci/stypendia": 0.25,
+    "kontakt/dane-teleadresowe": 0.15,
+}
+
+BAD_URL_PENALTIES = {
+    "irk.pb.edu.pl": 0.15,
+    "irk2.uci.pb.edu.pl": 0.10,
+    "kontakt": 0.05,
+    "2025/": 0.10,
+    "2026/": 0.10,
+    "dni-otwarte": 0.10,
+    "pralnie": 0.10,
+    "redakcja-serwisu-www": 0.10,
+    "faq-obsluga-informatyczna": 0.10,
 }
 
 def load_index(path=INDEX_FILE):
@@ -73,18 +94,51 @@ def search(query, k=3):
     q = vectorizer.transform([expanded_query])
     
     scores = cosine_similarity(q, selected_matrix).flatten()
-    best = scores.argsort()[::-1][:k]
+
+    for i, chunk in enumerate(selected_chunks):
+        url = chunk["url"].lower()
+        title = chunk["title"].lower()
+
+        for pattern, boost in IMPORTANT_URL_BOOSTS.items():
+            if pattern in url:
+                scores[i] += boost
+
+        for pattern, penalty in BAD_URL_PENALTIES.items():
+            if pattern in url:
+                scores[i] -= penalty
+
+        if "krok po kroku" in title:
+            scores[i] += 0.10
+
+        if "akademiki pb" in title:
+            scores[i] += 0.10
+
+        if "stypendia" in title:
+            scores[i] += 0.10
+
+    best = scores.argsort()[::-1]
 
     results = []
+    seen_urls = set()
 
     for idx in best:
         chunk = selected_chunks[idx]
+        url = chunk["url"].rstrip("/")
+
+        if url in seen_urls:
+            continue
+
+        seen_urls.add(url)
+
         results.append({
             "score": float(scores[idx]),
             "title": chunk["title"],
-            "url": chunk["url"],
+            "url": url,
             "category": chunk["category"],
             "text": chunk["text"],
         })
+
+        if len(results) >= k:
+            break
 
     return results
