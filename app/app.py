@@ -25,7 +25,9 @@ def main():
 
         # Tylko small talk omija bazę. Dla nieznanej intencji szukamy globalnie.
         if intent in ["powitanie", "chitchat"]:
-            results = []
+            print("\nBot:")
+            print("Cześć! Jestem Student Assistant PB. Mogę pomóc w sprawach rekrutacji, studiów, kontaktu, stypendiów i akademików.")
+            continue
         else:
             results = search(query, k=3)
 
