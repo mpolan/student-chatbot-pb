@@ -23,15 +23,13 @@ def main():
         intent = detect_intent(query)
         print(f"\nWykryta intencja: {intent}")
 
-        # Jeśli to zwykłe powitanie lub pogawędka, nie szukamy w bazie
-        if intent in ["nieznana", "powitanie", "chitchat"]:
+        # Tylko small talk omija bazę. Dla nieznanej intencji szukamy globalnie.
+        if intent in ["powitanie", "chitchat"]:
             results = []
-            # Przekazujemy puste wyniki, żeby LLM odpowiedział tylko "z głowy"
-            answer = generate_answer(query, results) 
         else:
-            # Dla konkretnych intencji studenckich szukamy w bazie
             results = search(query, k=3)
-            answer = generate_answer(query, results)
+
+        answer = generate_answer(query, results)
 
         print("\nBot:")
         print(answer)

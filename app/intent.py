@@ -17,6 +17,30 @@ INTENTS = {
     ],
 }
 
+SMALL_TALK = {
+    "powitanie": {
+        "cześć",
+        "czesc",
+        "hej",
+        "hejka",
+        "dzień dobry",
+        "dzien dobry",
+        "dobry wieczór",
+        "dobry wieczor",
+        "witam",
+    },
+    "chitchat": {
+        "dziękuję",
+        "dziekuje",
+        "dzięki",
+        "dzieki",
+        "do widzenia",
+        "dobranoc",
+        "miłego dnia",
+        "milego dnia",
+    },
+}
+
 try:
     nlp = spacy.load("pl_core_news_sm")
 except OSError:
@@ -59,7 +83,17 @@ def detect_intent(text):
 
     best_intent = max(scores, key=scores.get)
 
-    if scores[best_intent] == 0:
-        return "nieznana"
+    if scores[best_intent] > 0:
+        return best_intent
 
-    return best_intent
+    normalized_text = " ".join(
+        token.text.lower()
+        for token in nlp(text)
+        if token.is_alpha
+    )
+
+    for intent, phrases in SMALL_TALK.items():
+        if normalized_text in phrases:
+            return intent
+
+    return "nieznana"

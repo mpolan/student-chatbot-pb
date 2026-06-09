@@ -6,6 +6,7 @@ from app.intent import get_terms, detect_intent
 
 INDEX_FILE = Path("data/tfidf_index.joblib")
 INDEX_DATA = None
+MIN_TFIDF_SCORE = 0.03
 
 QUERY_EXPANSIONS = {
     "kontakt": "kontakt telefon email e-mail adres dziekanat dział spraw studenckich",
@@ -93,7 +94,8 @@ def search(query, k=3):
 
     q = vectorizer.transform([expanded_query])
     
-    scores = cosine_similarity(q, selected_matrix).flatten()
+    tfidf_scores = cosine_similarity(q, selected_matrix).flatten()
+    scores = tfidf_scores.copy()
 
     for i, chunk in enumerate(selected_chunks):
         url = chunk["url"].lower()
@@ -122,6 +124,9 @@ def search(query, k=3):
     seen_urls = set()
 
     for idx in best:
+        if tfidf_scores[idx] < MIN_TFIDF_SCORE:
+            continue
+
         chunk = selected_chunks[idx]
         url = chunk["url"].rstrip("/")
 
